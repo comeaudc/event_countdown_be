@@ -8,6 +8,7 @@ import cloudinary from "cloudinary";
 import inviteRoutes from "./routes/invite.js";
 import photoRoutes from "./routes/invite.js";
 import rsvpRoutes from "./routes/rsvp.js";
+import pushRoutes from "./routes/push.js";
 
 // Setups
 dotenv.config();
@@ -30,6 +31,7 @@ app.use(logReq);
 app.use("/api/invite", inviteRoutes);
 app.use("/api/rsvp", rsvpRoutes);
 app.use("/api/photos", photoRoutes);
+app.use("/api/push", pushRoutes);
 
 // 404 catching middleware
 app.use(notFound);
