@@ -1,7 +1,8 @@
 // Imports
 import express from "express";
 import dotenv from "dotenv";
-import { logReq, globalErr } from "./middleware/basicMiddleware.js";
+import error from "./utilities/error.js";
+import { logReq, globalErr, notFound } from "./middleware/basicMiddleware.js";
 
 // Setups
 dotenv.config();
@@ -12,6 +13,9 @@ const PORT = process.env.PORT || 3001;
 app.use(logReq);
 
 // Routes
+
+// 404 catching middleware
+app.use(notFound);
 
 // Global Error Handling
 app.use(globalErr);
