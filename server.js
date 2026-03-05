@@ -1,15 +1,17 @@
 // Imports
 import express from "express";
 import dotenv from "dotenv";
-import error from "./utilities/error.js";
+import connectDB from "./db/conn.js";
 import { logReq, globalErr, notFound } from "./middleware/basicMiddleware.js";
 
 // Setups
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
+connectDB();
 
 // Middelwares
+app.use(express.json());
 app.use(logReq);
 
 // Routes
