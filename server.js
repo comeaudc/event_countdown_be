@@ -3,6 +3,9 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./db/conn.js";
 import { logReq, globalErr, notFound } from "./middleware/basicMiddleware.js";
+import inviteRoutes from "./routes/invite.js";
+import photoRoutes from "./routes/invite.js";
+import rsvpRoutes from "./routes/rsvp.js";
 
 // Setups
 dotenv.config();
@@ -15,6 +18,9 @@ app.use(express.json());
 app.use(logReq);
 
 // Routes
+app.use("/api/invite", inviteRoutes);
+app.use("/api/rsvp", rsvpRoutes);
+app.use("/api/photos", photoRoutes);
 
 // 404 catching middleware
 app.use(notFound);
