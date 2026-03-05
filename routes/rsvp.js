@@ -7,6 +7,7 @@ const router = express.Router();
 // @desc: Update RSVP
 router.post("/", tokenAuth, async (req, res, next) => {
   const { attending } = req.body;
+
   if (typeof attending !== "boolean")
     next(error(400, "Attending must be boolean"));
 
