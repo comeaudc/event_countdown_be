@@ -3,6 +3,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./db/conn.js";
 import { logReq, globalErr, notFound } from "./middleware/basicMiddleware.js";
+import cloudinary from "cloudinary";
+
 import inviteRoutes from "./routes/invite.js";
 import photoRoutes from "./routes/invite.js";
 import rsvpRoutes from "./routes/rsvp.js";
@@ -12,6 +14,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 connectDB();
+
+// Cloudinary Config
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 // Middelwares
 app.use(express.json());
