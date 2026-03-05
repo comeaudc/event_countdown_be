@@ -6,7 +6,7 @@ const router = express.Router();
 
 // @route:  GET /api/invite/:token
 // @desc:   Verify invite token and return guest info
-router.get("/:token", async (req, resizeBy, next) => {
+router.get("/:token", async (req, res, next) => {
   try {
     const guest = await Guest.findOne({ inviteToken: req.params.token }).select(
       "name email rsvp",
