@@ -3,11 +3,13 @@ import mongoose from "mongoose";
 const photoSchema = new mongoose.Schema(
   {
     imageUrl: { type: String, required: true },
-    caption: { type: String, default: "" },
+    caption: {
+      type: String,
+      maxlength: 200,
+    },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Guest",
-      required: true,
     },
   },
   { timestamps: true },
