@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./db/conn.js";
 import { logReq, globalErr, notFound } from "./middleware/basicMiddleware.js";
 import cloudinary from "cloudinary";
+import cors from "cors";
 
 import inviteRoutes from "./routes/invite.js";
 import photoRoutes from "./routes/invite.js";
@@ -24,6 +25,7 @@ cloudinary.config({
 });
 
 // Middelwares
+app.use(cors());
 app.use(express.json());
 app.use(logReq);
 
