@@ -12,7 +12,7 @@ router.get("/:token", async (req, res, next) => {
       "name email rsvp",
     );
 
-    if (!guest) return next(error(500, err.message));
+    if (!guest) return next(error(500, "Guest Not on the List"));
 
     res.json(guest);
   } catch (err) {
