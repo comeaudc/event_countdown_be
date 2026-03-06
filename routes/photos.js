@@ -1,7 +1,6 @@
 import express from "express";
 import multer from "multer";
-import streamifier from "streamifier";
-import { v2 as cloudinary } from "cloudinary";
+import uploadToCloudinary from "../utilities/cloudinaryHelper.js";
 import { tokenAuth } from "../middleware/tokenAuth.js";
 import Photo from "../models/photoSchema.js";
 import error from "../utilities/error.js";
@@ -18,32 +17,21 @@ router.post(
   upload.array("photos", 10),
   async (req, res, next) => {
     try {
-      if (!req.files || req.files.length === 0)
-        next(error(400, "No Photos Uploaded"));
+      if (!req.files?.length) {
+        return next(error(400, "No Photos Uploaded"));
+      }
 
       const uploads = await Promise.all(
-        req.files.map((file) => {
-          return new Promise((resolve, reject) => {
-            const stream = cloudinary.upload_stream(
-              { folder: "wedding" },
-              (err, result) => {
-                if (err) reject(err);
-                else resolve(result.secure_url);
-              },
-            );
-
-            streamifier.createReadStream(file.buffer).pipe(stream);
-          });
-        }),
+        req.files.map((file) => uploadToCloudinary(file.buffer)),
       );
 
-      const savedPhotos = await Photo.insertMany(
-        uploads.map((url) => ({
-          imageUrl: url,
-          caption: req.body.caption || "",
-          uploadedBy: req.user.id,
-        })),
-      );
+      const photos = uploads.map((url) => ({
+        imageUrl: url,
+        caption: req.body.caption || "",
+        uploadedBy: req.user.id,
+      }));
+
+      const savedPhotos = await Photo.insertMany(photos);
 
       res.status(201).json(savedPhotos);
     } catch (err) {

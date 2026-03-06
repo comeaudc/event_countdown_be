@@ -7,7 +7,7 @@ import cloudinary from "cloudinary";
 import cors from "cors";
 
 import inviteRoutes from "./routes/invite.js";
-import photoRoutes from "./routes/invite.js";
+import photoRoutes from "./routes/photos.js";
 import rsvpRoutes from "./routes/rsvp.js";
 import pushRoutes from "./routes/push.js";
 

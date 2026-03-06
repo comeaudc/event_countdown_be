@@ -9,7 +9,7 @@ router.post("/", tokenAuth, async (req, res, next) => {
   const { attending } = req.body;
 
   if (typeof attending !== "boolean")
-    next(error(400, "Attending must be boolean"));
+    return next(error(400, "Attending must be boolean"));
 
   try {
     req.guest.rsvp = attending;
