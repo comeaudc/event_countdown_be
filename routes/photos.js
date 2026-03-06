@@ -14,31 +14,32 @@ const upload = multer({ storage });
 router.post(
   "/",
   tokenAuth,
-  upload.array("photos", 10),
+  upload.array("media", 10),
   async (req, res, next) => {
     try {
       if (!req.files?.length) {
-        return next(error(400, "No Photos Uploaded"));
+        return next(error(400, "No Media Uploaded"));
       }
 
       const uploads = await Promise.all(
-        req.files.map((file) => uploadToCloudinary(file.buffer)),
+        req.files.map((file) => uploadToCloudinary(file.buffer))
       );
 
-      const photos = uploads.map((url) => ({
-        imageUrl: url,
-        caption: req.body.caption || "",
+      const media = uploads.map((file, i) => ({
+        imageUrl: file.url,
+        type: file.type, // image or video
+        caption: req.body.captions?.[i] || "",
         uploadedBy: req.user.id,
       }));
 
-      const savedPhotos = await Photo.insertMany(photos);
+      const savedMedia = await Photo.insertMany(media);
 
-      res.status(201).json(savedPhotos);
+      res.status(201).json(savedMedia);
     } catch (err) {
       console.error(err);
       next(error(500, "Server Error"));
     }
-  },
+  }
 );
 
 export default router;

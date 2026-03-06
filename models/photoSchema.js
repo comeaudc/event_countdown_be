@@ -11,6 +11,11 @@ const photoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Guest",
     },
+    type: {
+      type: String,
+      enum: ["image", "video"],
+      default: "image",
+    },
   },
   { timestamps: true },
 );
