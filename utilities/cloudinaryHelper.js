@@ -1,35 +1,23 @@
-// uploadBuffer.js
+// utilities/cloudinaryHelper.js
 import cloudinary from "cloudinary";
-import streamifier from "streamifier";
 
-/**
- * Upload a buffer to Cloudinary
- * @param {Buffer} buffer - file buffer
- * @param {Object} options - optional Cloudinary options
- * @returns {Promise<{url: string, type: string, public_id: string}>}
- */
-export default function uploadBuffer(buffer, options = {}) {
-  return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        folder: "wedding",
-        resource_type: "auto", // supports images and videos
-        ...options,
-      },
-      (err, result) => {
-        if (err) {
-          console.error("Cloudinary upload error:", err);
-          return reject(err);
-        }
+export default async function uploadBufferBase64(buffer, options = {}) {
+  try {
+    const base64 = `data:application/octet-stream;base64,${buffer.toString("base64")}`;
 
-        resolve({
-          url: result.secure_url,
-          type: result.resource_type, // "image" or "video"
-          public_id: result.public_id,
-        });
-      }
-    );
+    const result = await cloudinary.uploader.upload(base64, {
+      folder: "wedding",
+      resource_type: "auto", // supports image & video
+      ...options,
+    });
 
-    streamifier.createReadStream(buffer).pipe(uploadStream);
-  });
+    return {
+      url: result.secure_url,
+      type: result.resource_type, // "image" or "video"
+      public_id: result.public_id,
+    };
+  } catch (err) {
+    console.error("Cloudinary upload error:", err);
+    throw err;
+  }
 }
