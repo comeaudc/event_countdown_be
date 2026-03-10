@@ -62,4 +62,15 @@ router.get("/", tokenAuth, async (req, res) => {
   }
 });
 
+router.put("/:id", tokenAuth, async (req, res, next) => {
+  try {
+    const updatedPhoto = await Photo.findByIdAndUpdate(req.params.id, req.body);
+
+    res.json(updatedPhoto);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+
 export default router;
